@@ -1,0 +1,54 @@
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f8f8f8;
+  display: flex;
+  justify-content: center;
+  padding: 40px;
+}
+
+.registration-box {
+  border: 2px solid #ccc;
+  border-radius: 10px;
+  padding: 30px 40px;
+  width: 300px;
+  background-color: #fff;
+}
+
+.title {
+  text-align: center;
+  color: green;
+  margin-bottom: 25px;
+}
+
+.label {
+  display: block;
+  margin-top: 15px;
+  color: yellow;
+  font-weight: bold;
+}
+
+input[type="text"] {
+  width: 100%;
+  padding: 8px;
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin-top: 5px;
+}
+
+.submit-btn {
+  margin-top: 20px;
+  width: 100%;
+  padding: 10px;
+  background-color: aqua;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.message {
+  text-align: center;
+  margin-top: 15px;
+  font-weight: bold;
+}

@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title bgcolor="white">Live Voting Results</title>
+  <style>
+    body {
+      background-color: #111;
+      color: white;
+      font-family: Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 3em;
+      animation: blinkColors 1.5s infinite;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+      margin-top: 20px;
+    }
+
+    li {
+      margin: 15px 0;
+      font-size: 1.5em;
+    }
+
+    .candidate {
+      color: yellow;
+    }
+
+    .votes {
+      color: aqua;
+    }
+
+    .percent {
+      color: skyblue;
+    }
+
+    h2 {
+      margin-top: 40px;
+      font-size: 2em;
+      color: #00ffcc;
+    }
+
+    #winner {
+      font-weight: bold;
+      color: gold;
+    }
+
+    @keyframes blinkColors {
+      0%   { color: red; }
+      33%  { color: orange; }
+      66%  { color: green; }
+      100% { color: red; }
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Live Voting Result</h1>
+  <ul>
+    <li><span class="candidate">Candidate A:</span>
+      <span class="votes" id="votesA">0</span> votes
+      (<span class="percent" id="percentA">0%</span>)</li>
+      
+    <li><span class="candidate">Candidate B:</span>
+      <span class="votes" id="votesB">0</span> votes
+      (<span class="percent" id="percentB">0%</span>)</li>
+      
+    <li><span class="candidate">Candidate C:</span>
+      <span class="votes" id="votesC">0</span> votes
+      (<span class="percent" id="percentC">0%</span>)</li>
+      
+    
+    <li><span class="candidate">NOTA:</span>
+      <span class="votes" id="votesNOTA">0</span> votes
+      (<span class="percent" id="percentNOTA">0%</span>)</li>
+  </ul>
+
+  <h2>🏆 Winner: <span id="winner">TBD</span></h2>
+
+  <script>
+    const ws = new WebSocket('ws://localhost:3000');
+
+    ws.onmessage = (event) => {
+      const data = JSON.parse(event.data);
+
+      document.getElementById('votesA').textContent = data.candidateA || 0;
+      document.getElementById('percentA').textContent = (data.percentA || 0).toFixed(1) + '%';
+
+      document.getElementById('votesB').textContent = data.candidateB || 0;
+      document.getElementById('percentB').textContent = (data.percentB || 0).toFixed(1) + '%';
+
+      document.getElementById('votesC').textContent = data.candidateC || 0;
+      document.getElementById('percentC').textContent = (data.percentC || 0).toFixed(1) + '%';
+
+      
+
+      document.getElementById('votesNOTA').textContent = data.nota || 0;
+      document.getElementById('percentNOTA').textContent = (data.percentNOTA || 0).toFixed(1) + '%';
+
+      document.getElementById('winner').textContent = formatWinner(data.winner);
+    };
+
+    function formatWinner(winner) {
+      const map = {
+        candidateA: 'Candidate A',
+        candidateB: 'Candidate B',
+        candidateC: 'Candidate C',
+        
+        nota: 'NOTA',
+        Tie: 'It’s a Tie!'
+      };
+      return map[winner] || 'TBD';
+    }
+  </script>
+
+</body>
+</html>

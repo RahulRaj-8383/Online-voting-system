@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Voting Results</title>
+  <style>
+    body {
+      background: #fefefe;
+      font-family: 'Segoe UI', sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .result-box {
+      background: #ffffff;
+      padding: 40px;
+      border-radius: 15px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+      text-align: center;
+      width: 400px;
+    }
+    h1 {
+      margin-bottom: 20px;
+    }
+    .result-line {
+      margin: 10px 0;
+      font-size: 18px;
+    }
+    .winner {
+      margin-top: 20px;
+      font-size: 20px;
+      font-weight: bold;
+      color: #28a745;
+    }
+    button {
+      margin-top: 25px;
+      padding: 10px 15px;
+      background: #dc3545;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #c82333;
+    }
+  </style>
+</head>
+<body>
+  <div class="result-box">
+    <h1>Voting Results</h1>
+    <div id="results"></div>
+    <div class="winner" id="winnerText"></div>
+    <button onclick="resetVotes()">Reset Votes</button>
+  </div>
+
+  <script>
+    const votes = JSON.parse(localStorage.getItem("votes")) || {
+      "Candidate A": 0,
+      "Candidate B": 0,
+      "Candidate C": 0,
+      "NOTA": 0
+    };
+
+    const resultsDiv = document.getElementById("results");
+
+    for (const [name, count] of Object.entries(votes)) {
+      resultsDiv.innerHTML += `<div class="result-line">${name}: ${count} vote(s)</div>`;
+    }
+
+    const maxVotes = Math.max(...Object.values(votes));
+    const winners = Object.keys(votes).filter(candidate => votes[candidate] === maxVotes);
+    document.getElementById("winnerText").innerHTML = 
+      winners.length > 1 
+        ? `It's a tie between: ${winners.join(', ')}`
+        : `Winner: ${winners[0]}`;
+
+    function resetVotes() {
+      localStorage.removeItem("votes");
+      window.location.href = "index.html";
+    }
+  </script>
+</body>
+</html>

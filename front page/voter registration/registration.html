@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Voter Registration</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <div class="registration-box">
+    <h2 class="title">Voter Registration</h2>
+
+    <form id="voterForm">
+      <label class="label" for="firstName">Name:</label>
+      <input type="text" id="firstName" required>
+
+      <label class="label" for="lastName">Last Name:</label>
+      <input type="text" id="lastName" required>
+
+      <label class="label" for="age">Age:</label>
+      <input type="number" id="age" required min="0">
+
+      <p id="message" class="message"></p>
+      
+      <button type="submit" class="submit-btn">Submit</button>
+    </form>
+  </div>
+
+  <script>
+    const registeredVoters = [];
+
+    document.getElementById('voterForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      const first = document.getElementById('firstName').value.trim().toLowerCase();
+      const last = document.getElementById('lastName').value.trim().toLowerCase();
+      const age = parseInt(document.getElementById('age').value.trim(), 10);
+      const message = document.getElementById('message');
+
+      // Age eligibility check
+      if (age < 18) {
+        message.textContent = "Not eligible";
+        message.style.color = "red";
+        return;
+      }
+
+      // Check if voter already registered
+      const exists = registeredVoters.some(voter =>
+        voter.first === first && voter.last === last && voter.age === age
+      );
+
+      if (exists) {
+        message.textContent = "Already Registered";
+        message.style.color = "red";
+      } else {
+        registeredVoters.push({ first, last, age });
+        message.textContent = "Registration Successful";
+        message.style.color = "green";
+
+        // Redirect after short delay
+        setTimeout(() => {
+          window.location.href = "http://127.0.0.1:5500/voting%20counting/index.html";
+        }, 1000); // 1-second delay
+
+        document.getElementById('voterForm').reset();
+      }
+    });
+  </script>
+
+</body>
+</html>
+
+
